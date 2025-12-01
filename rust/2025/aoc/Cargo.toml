@@ -3,8 +3,4 @@ name = "aoc"
 version = "0.1.0"
 edition = "2024"
 
-[[bin]]
-name = "aoc24"
-path = "2024/src/main.rs"
-
 [dependencies]
