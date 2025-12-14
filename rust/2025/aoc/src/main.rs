@@ -1,5 +1,6 @@
-use aoc::problems::problem1;
+use aoc::problems;
 
 fn main() {
-    problem1::part1();
+    problems::problem1::part1();
+    problems::problem2::part1();
 }

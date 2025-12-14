@@ -2,7 +2,7 @@ use crate::common;
 
 const DIAL_SIZE: u16 = 100;
 pub fn part1() {
-    let input = common::read_ex_inp(1, 1);
+    let input = common::read_ex_inp(1);
     let mut points: u64 = 0;
     let mut dial: isize = 50;
     for line in input.lines() {
