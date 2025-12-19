@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use crate::common;
 
 pub fn part1() {
@@ -22,7 +24,9 @@ pub fn part1() {
 }
 
 pub fn part2() {
-    let input = common::read_inp(2);
+    let input = common::read_ex_inp(2);
+
+    let start = Instant::now();
 
     let mut res: usize = 0;
     input.split(",").for_each(|r| {
@@ -40,17 +44,33 @@ pub fn part2() {
                 res += n;
                 continue;
             }
-            // TODO: must have a more performatic way to check this
-            for chunk_size in 2..=(nstr.len()/2) {
-                let chunk = nstr.get(0..chunk_size).unwrap().to_string();
-                if chunk.repeat(nstr.len()/chunk_size) != nstr {
-                    continue;
+
+            'chunk: for chunk_size in 2..=(nstr.len()/2) {
+                let chunk = &nstr[0..chunk_size];
+
+                let mut chunk_start = chunk_size;
+                loop {
+                    if &nstr[chunk_start..chunk_start+chunk_size] != chunk {
+                        continue 'chunk;
+                    }
+                    
+                    chunk_start = chunk_start + chunk_size;
+                    if chunk_start == nstr.len() {
+                        res += n;
+                        break 'chunk;
+                    }
+                    if chunk_start + chunk_size > nstr.len() {
+                        continue 'chunk;
+                    }
                 }
-                res += n;
-                break;
             }
         }
     });
     
+    let duration = start.elapsed();
+    let secs = duration.as_secs_f64();
+    
     println!("2/2: {res}");
+
+    println!("Elapsed time: {secs}");
 }
