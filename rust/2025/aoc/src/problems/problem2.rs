@@ -5,6 +5,8 @@ use crate::common;
 pub fn part1() {
     let input = common::read_ex_inp(2);
 
+    let start = Instant::now();
+
     let mut res: usize = 0;
     input.split(",").for_each(|r| {
         let (start, end) = r.split_once("-").unwrap();
@@ -19,8 +21,11 @@ pub fn part1() {
             }
         }
     });
+
+    let duration = start.elapsed();
+    let secs = duration.as_secs_f64();
     
-    println!("2/1: {res}");
+    println!("2/1: {res} - Elapsed time: {secs}");
 }
 
 pub fn part2() {
@@ -70,7 +75,5 @@ pub fn part2() {
     let duration = start.elapsed();
     let secs = duration.as_secs_f64();
     
-    println!("2/2: {res}");
-
-    println!("Elapsed time: {secs}");
+    println!("2/2: {res} - Elapsed time: {secs}");
 }
