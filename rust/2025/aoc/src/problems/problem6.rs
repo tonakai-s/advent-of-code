@@ -25,8 +25,8 @@ pub fn part1() {
     let mut total = 0;
     for i in 0..problems_grid[0].len() {
         let operation = match operators[i] {
-            "*" => u64::strict_mul,
-            _ => u64::strict_add
+            "*" => u64::wrapping_mul,
+            _ => u64::wrapping_add
         };
         let res = problems_grid.iter().skip(1).fold(problems_grid[0][i], |acc, r| operation(acc, r[i]));
         total += res;
