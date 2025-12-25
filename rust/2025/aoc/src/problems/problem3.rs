@@ -30,68 +30,43 @@ pub fn part1() {
 }
 
 pub fn part2() {
-    let input = common::read_ex_inp(3);
+    let input = common::read_inp(3);
 
     let start = Instant::now();
 
     let mut total_joltage: u64 = 0;
-    let mut added = 0;
 
     for bank in input.lines() {
-        let mut joltage: u64 = 0;
-        let mut idx = 0;
-        let mut available_b = 12;
+        let mut available_b = 11;
         let bank: Vec<u8> = bank.chars().map(|c| c.to_digit(10).unwrap() as u8).collect();
 
-        for (i, n) in bank[0..bank.len()-available_b].iter().enumerate() {
-            if *n > joltage as u8 {
-                joltage = *n as u64;
-                idx = i+1;
-                if *n == 9 {
-                    break;
-                }
-            }
-        }
-        available_b -= 1;
-        joltage = joltage * (10u64.pow(available_b as u32)) as u64;
+        let mut joltage = 0;
+        let mut idx = 0;
 
-        //while idx < bank.len()-1-available_b && available_b > 1 {
-        while idx < bank.len()-available_b && available_b > 1 {
-            let mut j = 0;
-            let mut ij = 0;
-            for (i, n) in bank[idx..=(bank.len()-available_b)].iter().enumerate() {
-                if *n > j {
-                    j = *n;
-                    ij = i;
-                    if *n == 9 {
-                        break;
-                    }
-                }
-            }
+        while idx < bank.len()-available_b && available_b > 0 {
+            let (i, biggest) = bank[idx..bank.len()-available_b]
+                .iter()
+                .enumerate()
+                .fold((0,&0), |prev, curr| if *curr.1 > *prev.1 { curr } else { prev } );
+
+            joltage += *biggest as u64 * (10u64.pow(available_b as u32)) as u64;
             available_b -= 1;
-            joltage += j as u64 * (10u64.pow(available_b as u32)) as u64;
-            idx += ij+1;
+            idx += i+1;
         }
         if available_b > 1 {
-            // 168736754411460
-            // 168738209663590 *
-            //joltage += bank[bank.len()-available_b..].iter().fold(0u64, |j, n| {
-            joltage += bank[idx..].iter().fold(0u64, |j, n| {
+            joltage += bank[bank.len()-available_b..].iter().fold(0u64, |j, n| {
+                let accum = j + *n as u64 * (10u64.pow(available_b as u32));
                 available_b -= 1;
-                j + *n as u64 * (10u64.pow(available_b as u32))
+                accum
             });
         } else {
             joltage += *bank[idx..].iter().max().unwrap() as u64;
         }
-        println!("bank: {:?}", bank);
-        println!("joltage: {joltage}");
-        added += 1;
         total_joltage += joltage;
     }
 
     let duration = start.elapsed();
     let secs = duration.as_secs_f64();
 
-    println!("added: {added}");
     println!("3/2: {total_joltage} - Elapsed time: {secs}");
 }
