@@ -10,4 +10,5 @@ fn main() {
     problems::problem4::part2();
     problems::problem6::part1();
     problems::problem6::part2();
+    problems::problem7::part1();
 }
